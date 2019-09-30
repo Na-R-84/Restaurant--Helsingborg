@@ -1,4 +1,4 @@
-﻿
+﻿using Restaurant.Domain;
 using Resturant.Domain;
 using System;
 using System.Collections.Generic;
@@ -11,7 +11,7 @@ namespace Restaurant
     {
         static void Main(string[] args)
         {
-            ResturantX restaurant = new ResturantX("MaxDonalds");
+            RestaurantX restaurant = new RestaurantX("MaxDonalds");
 
             bool shouldNotExit = true;
 
@@ -38,9 +38,9 @@ namespace Restaurant
 
                         string table = ReadLine();
 
-                        Order order = new Order(dish, table);
+                        Order neworder = new Order(dish, table);
 
-                        restaurant.RegisterOrder(order);
+                        restaurant.RegisterOrder(neworder);
 
                        // orderQueue.Enqueue(order);
 
@@ -50,6 +50,22 @@ namespace Restaurant
 
                         Thread.Sleep(2000); // 2 sek
 
+                        break;
+
+                    case ConsoleKey.D2:
+                    case ConsoleKey.NumPad2:
+                        Console.WriteLine("Table           Dish                          Registered");
+                        Console.WriteLine("---------------------------------------------------------");
+
+                        foreach (Order order in restaurant.OrderQueue)
+                        {
+                            Console.WriteLine($"{order.Table} {order.Dish}              {order.RegisteredAt}");
+                        }
+
+                        Console.WriteLine("");
+                        Console.WriteLine("Press key to continue");
+
+                        Readkey();
                         break;
 
                     case ConsoleKey.D3:
@@ -63,6 +79,11 @@ namespace Restaurant
                 Clear();
             }
 
+        }
+
+        private static void Readkey()
+        {
+            throw new NotImplementedException();
         }
     }
 }
