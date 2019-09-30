@@ -1,7 +1,5 @@
 ﻿using Restaurant.Domain;
-using Resturant.Domain;
 using System;
-using System.Collections.Generic;
 using System.Threading;
 using static System.Console;
 
@@ -11,15 +9,16 @@ namespace Restaurant
     {
         static void Main(string[] args)
         {
-            RestaurantX restaurant = new RestaurantX("MaxDonalds");
+            RestaurantX restaurant = new RestaurantX("MaxDonalds", new CookMaster5000());
 
             bool shouldNotExit = true;
 
             while (shouldNotExit)
             {
                 WriteLine("1. Register order");
-                WriteLine("2. List orders");
-                WriteLine("3. Exit");
+                WriteLine("2. List pending orders");
+                WriteLine("3. Process orders");
+                WriteLine("4. Exit");
 
                 ConsoleKeyInfo keyPressed = ReadKey(true);
 
@@ -38,11 +37,9 @@ namespace Restaurant
 
                         string table = ReadLine();
 
-                        Order neworder = new Order(dish, table);
+                        Order newOrder = new Order(dish, table);
 
-                        restaurant.RegisterOrder(neworder);
-
-                       // orderQueue.Enqueue(order);
+                        restaurant.RegisterOrder(newOrder);
 
                         Clear();
 
@@ -54,22 +51,35 @@ namespace Restaurant
 
                     case ConsoleKey.D2:
                     case ConsoleKey.NumPad2:
-                        Console.WriteLine("Table           Dish                          Registered");
-                        Console.WriteLine("---------------------------------------------------------");
+
+                        WriteLine("Table Dish                            Registered");
+                        WriteLine("------------------------------------------------------------");
 
                         foreach (Order order in restaurant.OrderQueue)
                         {
-                            Console.WriteLine($"{order.Table} {order.Dish}              {order.RegisteredAt}");
+                            WriteLine($"{order.Table}  {order.Dish}                    {order.RegisteredAt}");
                         }
 
-                        Console.WriteLine("");
-                        Console.WriteLine("Press key to continue");
+                        WriteLine();
+                        WriteLine("Press key to continue");
 
-                        Readkey();
+                        ReadKey();
+
                         break;
 
                     case ConsoleKey.D3:
                     case ConsoleKey.NumPad3:
+
+                        var completedOrders = restaurant.ProcessOrders();
+
+                        WriteLine("All orders processed");
+
+                        Thread.Sleep(2000);
+
+                        break;
+
+                    case ConsoleKey.D4:
+                    case ConsoleKey.NumPad4:
 
                         shouldNotExit = false;
 
@@ -79,11 +89,6 @@ namespace Restaurant
                 Clear();
             }
 
-        }
-
-        private static void Readkey()
-        {
-            throw new NotImplementedException();
         }
     }
 }
